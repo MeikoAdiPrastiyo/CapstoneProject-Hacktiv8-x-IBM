@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    body { 
+      margin: 0;
+      padding: 0;
+      background-color: #f2f2f2;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    
+    .login-container {
+      width: 100%;
+      max-width: 400px;
+      background: white;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+    
+    .login-box h2 {
+      margin-bottom: 8px;
+      text-align: center;
+      color: #2f6c3b;
+      font-size: 24px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 25px;
+    }
+    
+    .login-box label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    
+    .login-box input {
+      width: 100%;
+      padding: 10px 40px 10px 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    .login-box input:focus {
+      outline: none;
+      border-color: #2f6c3b;
+    }
+    
+    .password-wrapper {
+      position: relative;
+    }
+    
+    .password-wrapper i {
+      position: absolute;
+      right: 13px;
+      top: 37%;
+      transform: translateY(-50%);
+      color: #888;
+      cursor: pointer;
+    }
+
+    .forgot-password {
+      text-align: right;
+      margin-bottom: 20px;
+    }
+
+    .forgot-password a {
+      font-size: 13px;
+      color: #2f6c3b;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .forgot-password a:hover {
+      text-decoration: underline;
+    }
+    
+    .login-btn {
+      width: 100%;
+      padding: 12px;
+      font-size: 15px;
+      background-color: #2f6c3b;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+    
+    .login-btn:hover {
+      background-color: #255b30;
+    }
+
+    .divider {
+      text-align: center;
+      margin: 20px 0;
+      position: relative;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .divider::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: #ddd;
+    }
+
+    .divider span {
+      background: white;
+      padding: 0 15px;
+      position: relative;
+    }
+
+    .google-btn {
+      width: 100%;
+      padding: 12px;
+      font-size: 15px;
+      background-color: navy;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .google-btn:hover {
+      background-color: BLACK;
+    }
+
+    .google-btn i {
+      margin-right: 8px;
+    }
+    
+    .register-link {
+      margin-top: 15px;
+      font-size: 14px;
+      text-align: center;
+    }
+    
+    .register-link a {
+      color: #2f6c3b;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 18px;
+      color: #333;
+      cursor: pointer;
+    }
+    
+    .alert {
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 6px;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .alert-error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .alert-success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      margin: 20px 0;
+      color: #666;
+    }
+
+    .spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #2f6c3b;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 480px) {
+      .login-container {
+        padding: 20px;
+        margin: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-box">
+      <span class="close-btn" onclick="window.location.href='home.jsp';">&times;</span>
+      
+      <h2>Welcome Back</h2>
+      <p class="subtitle">Sign in to continue to your account</p>
+      
+      <!-- Show error message if exists -->
+      <div id="errorMessage" style="display: none;" class="alert alert-error">
+        <i class="fas fa-exclamation-circle" style="margin-right: 8px;"></i>
+        Login failed. Please try again.
+      </div>
+
+      <!-- Show success message if exists -->
+      <div id="successMessage" style="display: none;" class="alert alert-success">
+        <i class="fas fa-check-circle" style="margin-right: 8px;"></i>
+        Login successful! Redirecting...
+      </div>
+
+      <!-- Loading spinner -->
+      <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <div>Signing in with Google...</div>
+      </div>
+      
+      <!-- Regular Login Form -->
+      <form action="koneksidb.jsp" method="post">
+        <label for="userInput">Username or Email</label>
+        <input type="text" id="userInput" name="userInput" placeholder="Enter your username or email" required />
+
+        <label for="password">Password</label>
+        <div class="password-wrapper">
+          <input type="password" id="password" name="password" placeholder="Enter your password" required />
+          <i class="fas fa-eye" id="toggle-password"></i>
+        </div>
+
+        <div class="forgot-password">
+          <a href="#">Forgot Password?</a>
+        </div>
+
+        <button type="submit" class="login-btn">
+          <i class="fas fa-sign-in-alt" style="margin-right: 8px;"></i>
+          Sign In
+        </button>
+      </form>
+
+      <!-- Divider -->
+      <div class="divider">
+        <span>or continue with</span>
+      </div>
+
+      <!-- Google Login Button -->
+      <button id="google-btn" class="google-btn">
+        <i class="fab fa-google"></i>
+        Continue with Google
+      </button>
+
+      <div class="register-link">
+        Don't have an account? <a href="register.html">Create Account</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase and Google Login Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "",
+      authDomain: "",
+      projectId: "webcapstone",
+      storageBucket: "webcapstone.firebasestorage.app",
+      messagingSenderId: "",
+      appId: ""
+    };
+    
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    auth.languageCode = 'en';
+    const provider = new GoogleAuthProvider();
+
+    // Add scopes for additional user information
+    provider.addScope('email');
+    provider.addScope('profile');
+
+    // Google login button event listener
+    const googleBtn = document.getElementById("google-btn");
+    const loading = document.getElementById("loading");
+    const errorMessage = document.getElementById("errorMessage");
+    const successMessage = document.getElementById("successMessage");
+
+    googleBtn.addEventListener("click", async function() {
+      try {
+        // Show loading spinner
+        loading.style.display = "block";
+        googleBtn.style.display = "none";
+        
+        // Hide any previous messages
+        errorMessage.style.display = "none";
+        successMessage.style.display = "none";
+
+        // Sign in with Google
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        
+        // Get user information
+        const userData = {
+          uid: user.uid,
+          name: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+          emailVerified: user.emailVerified
+        };
+
+        console.log("Google Sign-In Successful:", userData);
+
+        // Show success message
+        successMessage.innerHTML = `<i class="fas fa-check-circle" style="margin-right: 8px;"></i>Welcome ${userData.name}! Signing you in...`;
+        successMessage.style.display = "block";
+
+        // Send user data to your server
+        await sendUserDataToServer(userData);
+
+        }catch (error) {
+        console.error("Google Sign-In Error:", error);
+        
+        // Hide loading
+        loading.style.display = "none";
+        googleBtn.style.display = "block";
+        
+        // Show error message
+        let errorMsg = "Google sign-in failed. Please try again.";
+        
+        switch(error.code) {
+          case 'auth/popup-closed-by-user':
+            errorMsg = "Sign-in was cancelled. Please try again.";
+            break;
+          case 'auth/popup-blocked':
+            errorMsg = "Pop-up was blocked by your browser. Please allow pop-ups and try again.";
+            break;
+          case 'auth/network-request-failed':
+            errorMsg = "Network error. Please check your internet connection.";
+            break;
+          case 'auth/too-many-requests':
+            errorMsg = "Too many requests. Please wait a moment and try again.";
+            break;
+        }
+        
+        errorMessage.innerHTML = `<i class="fas fa-exclamation-circle" style="margin-right: 8px;"></i>${errorMsg}`;
+        errorMessage.style.display = "block";
+      }
+    });
+
+    // Function to send user data to your server
+    async function sendUserDataToServer(userData) {
+      try {
+        // Create a form to submit user data to your JSP
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = 'google-login-handler.jsp';
+        
+        // Add hidden fields with user data
+        const fields = {
+          'google_uid': userData.uid,
+          'google_name': userData.name,
+          'google_email': userData.email,
+          'google_photo': userData.photoURL || '',
+          'login_type': 'google'
+        };
+        
+        for (const [key, value] of Object.entries(fields)) {
+          const input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = key;
+          input.value = value;
+          form.appendChild(input);
+        }
+        
+        document.body.appendChild(form);
+        form.submit();
+        
+      } catch (error) {
+        console.error("Error sending data to server:", error);
+        errorMessage.innerHTML = `<i class="fas fa-exclamation-circle" style="margin-right: 8px;"></i>Error processing login. Please try again.`;
+        errorMessage.style.display = "block";
+        
+        // Hide loading and show button again
+        loading.style.display = "none";
+        googleBtn.style.display = "block";
+      }
+    }
+
+    // Check if user is already signed in
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        console.log("User  is already signed in:", user.displayName);
+      }
+    });
+  </script>
+
+  <!-- Regular JavaScript for password toggle -->
+  <script>
+    const togglePassword = document.getElementById('toggle-password');
+    const passwordField = document.getElementById('password');
+
+    togglePassword.addEventListener('click', function () {
+      const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordField.setAttribute('type', type);
+      this.classList.toggle('fa-eye');
+      this.classList.toggle('fa-eye-slash');
+    });
+
+    // Show error message if URL contains error parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('error') === 'google_login_failed') {
+      document.getElementById('errorMessage').style.display = 'block';
+      document.getElementById('errorMessage').innerHTML = '<i class="fas fa-exclamation-circle" style="margin-right: 8px;"></i>Google login failed. Please try again.';
+    }
+  </script>
+</body>
+</html>

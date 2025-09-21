@@ -1,0 +1,239 @@
+<!-- register.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    body { 
+      margin: 0;
+      padding: 0;
+      background-color: #f2f2f2;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    
+    .register-container {
+      width: 100%;
+      max-width: 400px;
+      background: white;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+    
+    .register-box h2 {
+      margin-bottom: 20px;
+      text-align: center;
+      color: #2f6c3b;
+    }
+    
+    .register-box label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    
+    .register-box input {
+      width: 100%;
+      padding: 10px 40px 10px 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    
+    .password-wrapper {
+      position: relative;
+      
+    }
+    
+    .password-wrapper i {
+      position: absolute;
+      right: 13px;
+      top: 37%;
+      transform: translateY(-50%);
+      color: #888;
+      cursor: pointer;
+    }
+    
+    .register-btn {
+      width: 100%;
+      padding: 12px;
+      font-size: 15px;
+      background-color: #2f6c3b;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    
+    .register-btn:hover {
+      background-color: #255b30;
+    }
+    
+    .login-link {
+      margin-top: 15px;
+      font-size: 14px;
+      text-align: center;
+    }
+    
+    .login-link a {
+      color: #2f6c3b;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 18px;
+      color: #333;
+      cursor: pointer;
+    }
+    
+    .error-msg {
+      font-size: 13px;
+      color: red;
+      margin-top: -10px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    /* Tambahkan CSS ini */
+.alert {
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.alert-error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <div class="register-box">
+      <span class="close-btn" onclick="window.location.href='home.jsp';">&times;</span>
+      <h2>Create Your Account</h2>
+      <form action="koneksidb.jsp" method="post" onsubmit="return validateRegister(event)">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="nama" placeholder="Enter your username" required />
+        
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required />
+        
+        <label for="password">Password</label>
+        <div class="password-wrapper">
+          <input type="password" id="password" name="password" placeholder="Enter password" required />
+          <i class="fas fa-eye" id="toggle-password"></i>
+        </div>
+        
+        <label for="confirm-password">Confirm Password</label>
+        <div class="password-wrapper">
+          <input type="password" id="confirm-password" placeholder="Confirm password" required />
+          <i class="fas fa-eye" id="toggle-confirm-password"></i>
+        </div>
+        
+        <div class="error-msg" id="error-msg"></div>
+        
+        <button type="submit" class="register-btn">Register</button>
+      </form>
+      <!-- Tambahkan bagian ini -->
+<div id="successMessage" style="display: none;" class="alert alert-success">
+  <i class="fas fa-check-circle" style="margin-right: 8px;"></i>
+  Registration successful! Redirecting to login...
+</div>
+
+<div id="errorMessage" style="display: none;" class="alert alert-error">
+  <i class="fas fa-exclamation-circle" style="margin-right: 8px;"></i>
+  Registration failed. Please try again.
+</div>
+
+      <div class="login-link">
+        Already have an account? <a href="login.html">Login Here</a>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    const togglePassword = document.getElementById('toggle-password');
+    const toggleConfirmPassword = document.getElementById('toggle-confirm-password');
+    const passwordField = document.getElementById('password');
+    const confirmPasswordField = document.getElementById('confirm-password');
+    
+    togglePassword.addEventListener('click', function () {
+      const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordField.setAttribute('type', type);
+      this.classList.toggle('fa-eye');
+      this.classList.toggle('fa-eye-slash');
+    });
+    
+    toggleConfirmPassword.addEventListener('click', function () {
+      const type = confirmPasswordField.getAttribute('type') === 'password' ? 'text' : 'password';
+      confirmPasswordField.setAttribute('type', type);
+      this.classList.toggle('fa-eye');
+      this.classList.toggle('fa-eye-slash');
+    });
+    
+    function validateRegister(event) {
+      const password = passwordField.value;
+      const confirm = confirmPasswordField.value;
+      const errorMsg = document.getElementById('error-msg');
+      
+      if (password !== confirm) {
+        event.preventDefault();
+        errorMsg.textContent = 'Passwords do not match!';
+        return false;
+      }
+      
+      return true;
+    }
+    function validateRegister(event) {
+  const password = passwordField.value;
+  const confirm = confirmPasswordField.value;
+  const errorMsg = document.getElementById('error-msg');
+  
+  // Reset error message
+  errorMsg.textContent = '';
+  
+  // Check password length
+  if (password.length < 6) {
+    event.preventDefault();
+    errorMsg.textContent = 'Password must be at least 6 characters long!';
+    return false;
+  }
+  
+  // Check password match
+  if (password !== confirm) {
+    event.preventDefault();
+    errorMsg.textContent = 'Passwords do not match!';
+    return false;
+  }
+  
+  return true;
+}
+
+  </script>
+</body>
+</html>

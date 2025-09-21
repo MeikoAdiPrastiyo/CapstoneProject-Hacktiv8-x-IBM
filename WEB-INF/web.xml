@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+                             https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         version="6.0">
+
+    <!-- Servlet untuk inputBarang.jsp (existing) -->
+    <servlet>
+        <servlet-name>inputBarang</servlet-name>
+        <jsp-file>/inputBarang.jsp</jsp-file>
+        <multipart-config>
+            <location>C:/temp</location>
+            <max-file-size>10485760</max-file-size> <!-- 10MB -->
+            <max-request-size>20971520</max-request-size> <!-- 20MB -->
+            <file-size-threshold>1048576</file-size-threshold> <!-- 1MB -->
+        </multipart-config>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>inputBarang</servlet-name>
+        <url-pattern>/inputBarang.jsp</url-pattern>
+    </servlet-mapping>
+
+    <!-- Servlet untuk processBarang.jsp (new) -->
+    <servlet>
+        <servlet-name>processBarang</servlet-name>
+        <jsp-file>/processBarang.jsp</jsp-file>
+        <multipart-config>
+            <location>C:/temp</location>
+            <max-file-size>10485760</max-file-size> <!-- 10MB -->
+            <max-request-size>20971520</max-request-size> <!-- 20MB -->
+            <file-size-threshold>1048576</file-size-threshold> <!-- 1MB -->
+        </multipart-config>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>processBarang</servlet-name>
+        <url-pattern>/processBarang.jsp</url-pattern>
+    </servlet-mapping>
+
+    <!-- Servlet untuk MasterBarang.jsp -->
+    <servlet>
+        <servlet-name>masterBarang</servlet-name>
+        <jsp-file>/MasterBarang.jsp</jsp-file>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>masterBarang</servlet-name>
+        <url-pattern>/MasterBarang.jsp</url-pattern>
+    </servlet-mapping>
+
+    <!-- Default welcome file -->
+    <welcome-file-list>
+        <welcome-file>home.jsp</welcome-file>
+    </welcome-file-list>
+    
+    <!-- Session timeout (30 minutes) -->
+    <session-config>
+        <session-timeout>60</session-timeout>
+    </session-config>
+    <servlet>
+    <servlet-name>ImageServlet</servlet-name>
+    <servlet-class>ImageServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>ImageServlet</servlet-name>
+    <url-pattern>/image</url-pattern>
+</servlet-mapping>
+<servlet>
+    <servlet-name>ProcessPayment</servlet-name>
+    <jsp-file>/processPayment.jsp</jsp-file>
+    <multipart-config>
+        <max-file-size>10485760</max-file-size> <max-request-size>20971520</max-request-size> <file-size-threshold>0</file-size-threshold>
+    </multipart-config>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>ProcessPayment</servlet-name>
+    <url-pattern>/processPayment.jsp</url-pattern>
+</servlet-mapping>
+
+    <servlet>
+        <servlet-name>updateUserProfile</servlet-name>
+        <jsp-file>/updateUserProfile.jsp</jsp-file>
+        <multipart-config>
+            <max-file-size>5242880</max-file-size> <!-- 5MB -->
+            <max-request-size>10485760</max-request-size> <!-- 10MB -->
+            <file-size-threshold>1048576</file-size-threshold> <!-- 1MB -->
+        </multipart-config>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>updateUserProfile</servlet-name>
+        <url-pattern>/updateUserProfile.jsp</url-pattern>
+    </servlet-mapping>
+
+</web-app>
